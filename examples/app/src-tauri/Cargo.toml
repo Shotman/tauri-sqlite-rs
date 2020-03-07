@@ -1,0 +1,26 @@
+[package]
+name = "app"
+version = "0.1.0"
+description = "A Tauri App"
+authors = [ "Lucas Nogueira <lucas@tauri.studio>" ]
+license = ""
+repository = ""
+default-run = "app"
+edition = "2018"
+build = "src/build.rs"
+
+[dependencies]
+tauri = { path = "../../../../tauri/tauri", features = [ "all-api", "edge" ] }
+tauri_sqlite = { path = "../../.." }
+
+[target."cfg(windows)".build-dependencies]
+winres = "0.1"
+
+[features]
+dev-server = [ "tauri/dev-server" ]
+embedded-server = [ "tauri/embedded-server" ]
+no-server = [ "tauri/no-server" ]
+
+[[bin]]
+name = "app"
+path = "src/main.rs"

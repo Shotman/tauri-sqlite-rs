@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div>
+      <input id="value" placeholder="The value to store">
+      <button id="store">Store</button>
+    </div>
+    <div>
+      <button id="read">Read key</button>
+      <div id="response"></div>
+    </div>
+
+    <script>
+      var key = 'store_key'
+      function onResponse (response) {
+        document.getElementById('response').innerHTML = JSON.stringify(response)
+      }
+      document.getElementById('store').addEventListener('click', function () {
+        var value = document.getElementById('value').value
+        window.tauri.promisified({
+          cmd: 'setItemSqlite',
+          key: key,
+          value: value
+        }).then(onResponse).catch(onResponse)
+      })
+
+      document.getElementById('read').addEventListener('click', function () {
+        window.tauri.promisified({
+          cmd: 'getItemSqlite',
+          key: key
+        }).then(onResponse).catch(onResponse)
+      })
+    </script>
+  </body>
+</html>
