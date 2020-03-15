@@ -39,12 +39,14 @@ impl TauriSqlite {
   }
 }
 
-impl tauri::extension::Extension for TauriSqlite {
-  fn extend_api(&self, webview: &mut tauri::WebView<'_, ()>, payload: &str) {
+impl tauri::plugin::Plugin for TauriSqlite {
+  fn extend_api(&self, webview: &mut tauri::WebView<'_, ()>, payload: &str) -> Result<bool, String> {
     use TauriSqliteCmd::*;
     if self.storage_enabled {
       match serde_json::from_str(payload) {
-        Err(_) => {}
+        Err(e) => {
+          Err(e.to_string())
+        }
         Ok(command) => {
           match command {
             SetItemSqlite { key, value, callback, error } => {
@@ -81,8 +83,11 @@ impl tauri::extension::Extension for TauriSqlite {
               )
             }
           }
+          Ok(true)
         }
       }
+    } else {
+      Ok(false)
     }
   }
 }

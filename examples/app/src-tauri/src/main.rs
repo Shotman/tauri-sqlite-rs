@@ -7,7 +7,7 @@ use tauri_sqlite::TauriSqlite;
 
 fn main() {
   tauri::AppBuilder::new()
-    .extension(TauriSqlite::new("storage.db".to_string(), true))
+    .plugin(TauriSqlite::new("storage.db".to_string(), true))
     .build()
     .run();
 }
